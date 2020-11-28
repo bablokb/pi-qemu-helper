@@ -16,17 +16,18 @@ Typical Usage
 
     # with original image
     sudo ./extract_kernel.sh 2020-08-20-raspios-buster-armhf-lite.img
-    sudo chown -R myuid:mygroupid .
-    
+
+    # resize image (SD card size has to be a power of 2 for QEmu)
+    qemu-img resize 2020-08-20-raspios-buster-armhf-lite.img 2G
+
     # first boot: resizes second partition and changes /boot/cmdline.txt
     ./raspi2.sh 2020-08-20-raspios-buster-armhf-lite.img
-    
+
     # extract cmdline.txt again (needed once after first boot)
     ./extract_kernel.sh 2020-08-20-raspios-buster-armhf-lite.img
-    sudo chown -R myuid:mygroupid .
-    
+
     # create qcow2 image for deltas (optional, but recommended)
-    qemu_img create -b 2020-08-20-raspios-buster-armhf-lite.img 2020-08-20-delta.qcow2
+    qemu_img create -f qcow2 -b 2020-08-20-raspios-buster-armhf-lite.img 2020-08-20-delta.qcow2 4G
     
     # use delta image in future boots
     ./raspi2.sh 2020-08-20-delta.qcow2
