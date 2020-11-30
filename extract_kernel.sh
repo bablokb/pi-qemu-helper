@@ -11,6 +11,7 @@
 
 BOOT_FILES="kernel.img  bcm2708-rpi-zero.dtb \
             kernel7.img bcm2709-rpi-2-b.dtb  \
+            kernel8.img bcm2710-rpi-3-b.dtb  \
             cmdline.txt"
 
 # --- write message to stderr   --------------------------------------------
