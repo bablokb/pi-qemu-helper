@@ -18,7 +18,7 @@ Typical Usage
     sudo ./extract_kernel.sh 2020-08-20-raspios-buster-armhf-lite.img
 
     # resize image (SD card size has to be a power of 2 for QEmu)
-    qemu-img resize 2020-08-20-raspios-buster-armhf-lite.img 2G
+    qemu-img resize 2020-08-20-raspios-buster-armhf-lite.img 4G
 
     # first boot: resizes second partition and changes /boot/cmdline.txt
     ./raspi2.sh 2020-08-20-raspios-buster-armhf-lite.img
@@ -27,10 +27,10 @@ Typical Usage
     ./extract_kernel.sh 2020-08-20-raspios-buster-armhf-lite.img
 
     # create qcow2 image for deltas (optional, but recommended)
-    qemu_img create -f qcow2 -b 2020-08-20-raspios-buster-armhf-lite.img 2020-08-20-delta.qcow2 4G
+    qemu_img create -f qcow2 -b 2020-08-20-raspios-buster-armhf-lite.img delta.qcow2
     
     # use delta image in future boots
-    ./raspi2.sh 2020-08-20-delta.qcow2
+    ./raspi2.sh delta.qcow2
  
 
 extract_kernel.sh
@@ -46,11 +46,17 @@ the extraction has to take place two times, once before the first boot
 and once after the first boot.
 
 
-raspi2.sh
+raspi_.sh
 ---------
 
+This is the generic start-script for all raspi-boards.
+
+
+raspi0.sh, raspi2.sh, raspi3.sh
+-------------------------------
+
 This starts the emulator with the hardware configured for the
-`raspi2`-board. The script required an image as the first parameter.
+respective board. The script required an image as the first parameter.
 You can add additional QEmu-options starting from the second option,
 e.g.
 
@@ -59,3 +65,21 @@ e.g.
 will start the emulator in snapshot mode (i.e. all changes during the
 session are discarded afterwards).
 
+
+Random Notes
+------------
+
+To add an USB-disk (stick), do the following:
+
+    qemu-img create -f qcow2 virt_disk.qcow2 16G
+    ./raspi2.sh delta.qcow2 \
+            -drive file=virt_disk.qcow2,if=none,node-name=my_disk \
+            -device usb-storage,drive=my_disk
+
+This will show up as `/dev/sda` in the guest. Don't expect great performance,
+USB-storage seems to use the USB 1.1 interface.
+
+The Pi-Zero kernel currently boots directly into a kernel panic.
+
+After successful shutdown, all kernels end with a kernel panic, which can be
+safely ignored.
