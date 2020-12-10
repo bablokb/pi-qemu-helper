@@ -17,16 +17,16 @@ EXTRA_ARGS="dwc_otg.fiq_fsm_enable=0"
 declare -A kernel dtb qemu
 
 kernel['raspi0']="kernel.img"
-kernel['raspi2']="kernel7.img"
-kernel['raspi3']="kernel8.img"
+kernel['raspi2b']="kernel7.img"
+kernel['raspi3b']="kernel8.img"
 
 dtb['raspi0']="bcm2708-rpi-zero.dtb"
-dtb['raspi2']="bcm2709-rpi-2-b.dtb"
-dtb['raspi3']="bcm2710-rpi-3-b.dtb"
+dtb['raspi2b']="bcm2709-rpi-2-b.dtb"
+dtb['raspi3b']="bcm2710-rpi-3-b.dtb"
 
 qemu['raspi0']="qemu-system-arm"
-qemu['raspi2']="qemu-system-arm"
-qemu['raspi3']="qemu-system-aarch64"
+qemu['raspi2b']="qemu-system-arm"
+qemu['raspi3b']="qemu-system-aarch64"
 
 
 # set defaults   --------------------------------------------------------------
@@ -43,7 +43,7 @@ usage() {
   echo -e "\n$pgm: emulate Raspberry Pi board with QEmu\n\
   \nusage: `basename $0` [options] image [qemu-options]\n\
   Possible options:\n\n\
-    -b board       board to emulate (raspi0, raspi2, raspi3)
+    -b board       board to emulate (raspi0, raspi2b, raspi3b)
     -S size        screen-size (default: $screen_size)
     -v             verbose operation
     -h             show this help
@@ -85,6 +85,9 @@ checkArguments() {
     echo "error: no board specified!" >&2
     usage
   fi
+
+  [ "$board" = "raspi2" ] && board="raspi2b"
+  [ "$board" = "raspi3" ] && board="raspi3b"
   if [ -z "${kernel[$board]}" ]; then
     echo "error: board $board is unsupported!" >&2
     usage

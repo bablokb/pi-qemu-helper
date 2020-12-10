@@ -13,4 +13,4 @@
 
 pgmdir=$(dirname "$0")
 
-"$pgmdir"/raspi_.sh -b raspi3 "$@"
+"$pgmdir"/raspi_.sh -b raspi3b "$@"
