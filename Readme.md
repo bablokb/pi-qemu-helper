@@ -24,10 +24,10 @@ Typical Usage
     raspi2.sh 2020-08-20-raspios-buster-armhf-lite.img
 
     # extract cmdline.txt again (needed once after first boot)
-    extract_kernel.sh 2020-08-20-raspios-buster-armhf-lite.img
+    sudo extract_kernel.sh 2020-08-20-raspios-buster-armhf-lite.img
 
     # create qcow2 image for deltas (optional, but recommended)
-    qemu_img create -f qcow2 -b 2020-08-20-raspios-buster-armhf-lite.img delta.qcow2
+    qemu-img create -f qcow2 -b 2020-08-20-raspios-buster-armhf-lite.img delta.qcow2
     
     # use delta image in future boots
     raspi2.sh delta.qcow2
